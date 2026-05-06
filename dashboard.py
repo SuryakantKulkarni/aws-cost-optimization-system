@@ -421,67 +421,78 @@ elif page == "AI Insights":
 
     st.title("AI Optimization Insights")
 
-    if not df.empty:
+    latest_cost = df.iloc[-1]["Cost"]
+    average_cost = df["Cost"].mean()
 
-        latest_cost = df.iloc[-1]["Cost"]
-        average_cost = df["Cost"].mean()
+    col1, col2 = st.columns(2)
 
-        col1, col2 = st.columns(2)
+    with col1:
 
-        with col1:
-
-            if latest_cost > average_cost:
-
-                st.markdown("""
-                <div class="insight-card">
-
-                    <h3>Cost Increase Detected</h3>
-
-                    <p>
-                    AWS spending is above normal baseline.
-                    Recommended optimization review required.
-                    </p>
-
-                    <ul>
-                        <li>Review idle EC2 instances</li>
-                        <li>Optimize S3 lifecycle policies</li>
-                        <li>Analyze Lambda execution frequency</li>
-                    </ul>
-
-                </div>
-                """, unsafe_allow_html=True)
-
-            else:
-
-                st.markdown("""
-                <div class="insight-card">
-
-                    <h3>Infrastructure Optimized</h3>
-
-                    <p>
-                    AWS infrastructure cost pattern is healthy and stable.
-                    </p>
-
-                </div>
-                """, unsafe_allow_html=True)
-
-        with col2:
+        if latest_cost > average_cost:
 
             st.markdown("""
             <div class="insight-card">
 
-                <h3>Optimization Recommendations</h3>
+                <h3 style='color:#0f172a;'>
+                Cost Increase Detected
+                </h3>
 
-                <ul>
-                    <li>Enable Reserved Instances</li>
-                    <li>Monitor unused services</li>
-                    <li>Track monthly billing trends</li>
-                    <li>Review storage utilization</li>
+                <p style='color:#475569;font-size:16px;'>
+
+                AWS spending is above normal baseline.
+                Recommended optimization review required.
+
+                </p>
+
+                <ul style='color:#334155;font-size:15px;'>
+
+                    <li>Review idle EC2 instances</li>
+                    <li>Optimize S3 lifecycle policies</li>
+                    <li>Analyze Lambda execution frequency</li>
 
                 </ul>
 
             </div>
             """, unsafe_allow_html=True)
+
+        else:
+
+            st.markdown("""
+            <div class="insight-card">
+
+                <h3 style='color:#0f172a;'>
+                Infrastructure Optimized
+                </h3>
+
+                <p style='color:#475569;font-size:16px;'>
+
+                AWS infrastructure cost pattern is healthy and stable.
+
+                </p>
+
+            </div>
+            """, unsafe_allow_html=True)
+
+    with col2:
+
+        st.markdown("""
+        <div class="insight-card">
+
+            <h3 style='color:#0f172a;'>
+            Optimization Recommendations
+            </h3>
+
+            <ul style='color:#334155;font-size:15px;'>
+
+                <li>Enable Reserved Instances</li>
+                <li>Monitor unused services</li>
+                <li>Track monthly billing trends</li>
+                <li>Review storage utilization</li>
+
+            </ul>
+
+        </div>
+        """, unsafe_allow_html=True)
 
 # ---------------- REPORTS ---------------- #
 
