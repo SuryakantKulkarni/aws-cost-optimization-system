@@ -13,7 +13,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# ---------------- CUSTOM CSS ---------------- #
+# ---------------- PREMIUM CSS ---------------- #
 
 st.markdown("""
 <style>
@@ -23,7 +23,11 @@ html, body, [class*="css"] {
 }
 
 .main {
-    background-color: #f5f7fa;
+    background: linear-gradient(
+        135deg,
+        #eef4ff,
+        #f8fbff
+    );
 }
 
 .block-container {
@@ -32,60 +36,132 @@ html, body, [class*="css"] {
 }
 
 section[data-testid="stSidebar"] {
-    background-color: white;
-    border-right: 1px solid #e5e7eb;
+    background: linear-gradient(
+        180deg,
+        #1e3a8a,
+        #2563eb
+    );
+
+    border-right: none;
+}
+
+section[data-testid="stSidebar"] * {
+    color: white !important;
 }
 
 h1 {
-    color: #111827;
+    color: #0f172a;
     font-size: 42px;
-    font-weight: 700;
+    font-weight: 800;
+    letter-spacing: -1px;
 }
 
 h2 {
-    color: #111827;
+    color: #1e293b;
     font-size: 28px;
+    font-weight: 700;
+}
+
+h3 {
+    color: #334155;
     font-weight: 600;
 }
 
 .metric-card {
+
     background: linear-gradient(
         135deg,
-        #ffffff,
-        #f8fbff
+        #2563eb,
+        #3b82f6
     );
 
-    padding: 22px;
-    border-radius: 18px;
-    border: 1px solid #dbeafe;
+    padding: 24px;
 
-    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.08);
+    border-radius: 22px;
+
+    box-shadow:
+    0 10px 25px rgba(37, 99, 235, 0.18);
+
+    color: white;
+
+    transition: 0.3s;
+}
+
+.metric-card:hover {
+    transform: translateY(-4px);
+}
+
+.metric-card h1,
+.metric-card h3 {
+    color: white !important;
 }
 
 .insight-card {
 
-    background: linear-gradient(
-        135deg,
-        #eff6ff,
-        #ffffff
-    );
+    background: white;
 
-    padding: 22px;
-    border-radius: 18px;
-    border: 1px solid #bfdbfe;
+    padding: 24px;
 
-    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.08);
+    border-radius: 22px;
+
+    border-left: 6px solid #2563eb;
+
+    box-shadow:
+    0 8px 24px rgba(15, 23, 42, 0.08);
 }
 
 .small-text {
-    color: #6b7280;
+    color: #475569;
     font-size: 15px;
 }
 
+.stTabs [data-baseweb="tab"] {
+
+    font-size: 16px;
+    font-weight: 600;
+    color: #2563eb;
+
+    background-color: white;
+
+    border-radius: 12px;
+
+    padding: 10px 18px;
+
+    margin-right: 8px;
+
+    border: 1px solid #dbeafe;
+}
+
+.stTabs [aria-selected="true"] {
+
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #3b82f6
+    );
+
+    color: white !important;
+
+    border: none;
+}
+
+.stDataFrame {
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    border: 1px solid #dbeafe;
+}
+
 .footer {
+
     text-align: center;
-    padding-top: 30px;
-    color: gray;
+
+    padding-top: 35px;
+
+    color: #64748b;
+
     font-size: 14px;
 }
 
@@ -126,7 +202,7 @@ with st.sidebar:
 
     st.success("Monitoring Services Operational")
 
-# ---------------- FETCH DATA ---------------- #
+# ---------------- FETCH S3 DATA ---------------- #
 
 response = s3.list_objects_v2(Bucket=BUCKET_NAME)
 
@@ -230,11 +306,11 @@ if page == "Executive Dashboard":
     st.markdown("## Cloud Spend Analytics")
 
     fig = px.area(
-    df,
-    x="Date",
-    y="Cost",
-    markers=True,
-    color_discrete_sequence=["#2563eb"]
+        df,
+        x="Date",
+        y="Cost",
+        markers=True,
+        color_discrete_sequence=["#2563eb"]
     )
 
     fig.update_layout(
@@ -254,16 +330,12 @@ elif page == "Cost Analytics":
 
     st.title("Cost Analytics")
 
-    st.markdown(
-        "<p class='small-text'>Infrastructure cost visibility and analysis.</p>",
-        unsafe_allow_html=True
-    )
-
     fig = px.line(
         df,
         x="Date",
         y="Cost",
-        markers=True
+        markers=True,
+        color_discrete_sequence=["#0f172a"]
     )
 
     st.plotly_chart(
@@ -281,11 +353,6 @@ elif page == "Cost Analytics":
 elif page == "AI Insights":
 
     st.title("AI Optimization Insights")
-
-    st.markdown(
-        "<p class='small-text'>AI-driven cloud cost recommendations.</p>",
-        unsafe_allow_html=True
-    )
 
     if not df.empty:
 
@@ -309,7 +376,7 @@ elif page == "AI Insights":
 
                     <ul>
                         <li>Review idle EC2 instances</li>
-                        <li>Optimize S3 storage lifecycle</li>
+                        <li>Optimize S3 lifecycle policies</li>
                         <li>Analyze Lambda execution frequency</li>
                     </ul>
 
@@ -352,11 +419,6 @@ elif page == "AI Insights":
 elif page == "Historical Reports":
 
     st.title("Historical Reports")
-
-    st.markdown(
-        "<p class='small-text'>Cloud financial reporting archive.</p>",
-        unsafe_allow_html=True
-    )
 
     st.dataframe(
         df,
