@@ -8,7 +8,7 @@ import plotly.express as px
 # ---------------- PAGE CONFIG ---------------- #
 
 st.set_page_config(
-    page_title="CloudCost AI",
+    page_title="AWS Cost Optimization Platform",
     page_icon="☁️",
     layout="wide"
 )
@@ -18,8 +18,12 @@ st.set_page_config(
 st.markdown("""
 <style>
 
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif;
+}
+
 .main {
-    background-color: #f4f7fb;
+    background-color: #f5f7fa;
 }
 
 .block-container {
@@ -28,47 +32,48 @@ st.markdown("""
 }
 
 section[data-testid="stSidebar"] {
-    background: white;
+    background-color: white;
     border-right: 1px solid #e5e7eb;
 }
 
-h1, h2, h3 {
+h1 {
     color: #111827;
+    font-size: 42px;
+    font-weight: 700;
+}
+
+h2 {
+    color: #111827;
+    font-size: 28px;
+    font-weight: 600;
 }
 
 .metric-card {
     background: white;
-    padding: 24px;
+    padding: 22px;
     border-radius: 18px;
     border: 1px solid #e5e7eb;
     box-shadow: 0 4px 18px rgba(0,0,0,0.05);
 }
 
 .insight-card {
-    background: linear-gradient(
-        135deg,
-        #ffffff,
-        #f8fafc
-    );
-
+    background: white;
     padding: 22px;
     border-radius: 18px;
     border: 1px solid #e5e7eb;
     box-shadow: 0 4px 16px rgba(0,0,0,0.05);
 }
 
-.status-card {
-    background: #ecfdf5;
-    border: 1px solid #10b981;
-    padding: 16px;
-    border-radius: 14px;
-    color: #065f46;
+.small-text {
+    color: #6b7280;
+    font-size: 15px;
 }
 
 .footer {
     text-align: center;
     padding-top: 30px;
     color: gray;
+    font-size: 14px;
 }
 
 </style>
@@ -84,35 +89,29 @@ BUCKET_NAME = "aws-cost-optimization-reports-surya"
 
 with st.sidebar:
 
-    st.title("☁️ CloudCost AI")
+    st.title("AWS Cost")
+    st.title("Optimization Platform")
+
+    st.markdown(
+        "<p class='small-text'>AI-Powered Cloud Cost Intelligence</p>",
+        unsafe_allow_html=True
+    )
 
     st.markdown("---")
 
-    st.markdown("### Platform Modules")
-
-    st.write("📊 Executive Dashboard")
-    st.write("💰 Cost Analytics")
-    st.write("🚨 Smart Alerts")
-    st.write("🤖 AI Recommendations")
-    st.write("⚙️ Infrastructure Insights")
-    st.write("📁 Historical Reports")
+    page = st.radio(
+        "Navigation",
+        [
+            "Executive Dashboard",
+            "Cost Analytics",
+            "AI Insights",
+            "Historical Reports"
+        ]
+    )
 
     st.markdown("---")
 
-    st.markdown("""
-    <div class="status-card">
-        <b>System Status:</b><br>
-        All AWS monitoring services operational.
-    </div>
-    """, unsafe_allow_html=True)
-
-# ---------------- HEADER ---------------- #
-
-st.markdown("""
-# ☁️ CloudCost AI Dashboard
-
-Enterprise-grade AWS cloud financial monitoring and optimization platform.
-""")
+    st.success("Monitoring Services Operational")
 
 # ---------------- FETCH DATA ---------------- #
 
@@ -163,64 +162,59 @@ df = pd.DataFrame({
     "Cost": costs
 }).sort_values("Date")
 
-# ---------------- TABS ---------------- #
+# ---------------- EXECUTIVE DASHBOARD ---------------- #
 
-tab1, tab2, tab3 = st.tabs([
-    "📊 Overview",
-    "🤖 AI Insights",
-    "📁 Reports"
-])
+if page == "Executive Dashboard":
 
-# ---------------- OVERVIEW TAB ---------------- #
+    st.title("AWS Cost Optimization Platform")
 
-with tab1:
+    st.markdown(
+        "<p class='small-text'>Real-time cloud financial operations and optimization dashboard.</p>",
+        unsafe_allow_html=True
+    )
 
     if not df.empty:
 
         latest_cost = df.iloc[-1]["Cost"]
         average_cost = df["Cost"].mean()
         total_cost = df["Cost"].sum()
-        highest_cost = df["Cost"].max()
+        peak_cost = df["Cost"].max()
 
         col1, col2, col3, col4 = st.columns(4)
 
         with col1:
-
             st.markdown(f"""
             <div class="metric-card">
-                <h3>💰 Total Cost</h3>
+                <h3>Total Cloud Spend</h3>
                 <h1>${total_cost:.2f}</h1>
             </div>
             """, unsafe_allow_html=True)
 
         with col2:
-
             st.markdown(f"""
             <div class="metric-card">
-                <h3>📈 Average Cost</h3>
+                <h3>Average Cost</h3>
                 <h1>${average_cost:.2f}</h1>
             </div>
             """, unsafe_allow_html=True)
 
         with col3:
-
             st.markdown(f"""
             <div class="metric-card">
-                <h3>🚨 Latest Cost</h3>
+                <h3>Current Billing</h3>
                 <h1>${latest_cost:.2f}</h1>
             </div>
             """, unsafe_allow_html=True)
 
         with col4:
-
             st.markdown(f"""
             <div class="metric-card">
-                <h3>🔥 Peak Cost</h3>
-                <h1>${highest_cost:.2f}</h1>
+                <h3>Peak Usage</h3>
+                <h1>${peak_cost:.2f}</h1>
             </div>
             """, unsafe_allow_html=True)
 
-    st.markdown("## 📊 AWS Cost Trend Analytics")
+    st.markdown("## Cloud Spend Analytics")
 
     fig = px.area(
         df,
@@ -240,35 +234,71 @@ with tab1:
         use_container_width=True
     )
 
-# ---------------- AI TAB ---------------- #
+# ---------------- COST ANALYTICS ---------------- #
 
-with tab2:
+elif page == "Cost Analytics":
 
-    st.markdown("## 🤖 AI Optimization Insights")
+    st.title("Cost Analytics")
 
-    col5, col6 = st.columns(2)
+    st.markdown(
+        "<p class='small-text'>Infrastructure cost visibility and analysis.</p>",
+        unsafe_allow_html=True
+    )
+
+    fig = px.line(
+        df,
+        x="Date",
+        y="Cost",
+        markers=True
+    )
+
+    st.plotly_chart(
+        fig,
+        use_container_width=True
+    )
+
+    st.dataframe(
+        df,
+        use_container_width=True
+    )
+
+# ---------------- AI INSIGHTS ---------------- #
+
+elif page == "AI Insights":
+
+    st.title("AI Optimization Insights")
+
+    st.markdown(
+        "<p class='small-text'>AI-driven cloud cost recommendations.</p>",
+        unsafe_allow_html=True
+    )
 
     if not df.empty:
 
         latest_cost = df.iloc[-1]["Cost"]
         average_cost = df["Cost"].mean()
 
-        with col5:
+        col1, col2 = st.columns(2)
+
+        with col1:
 
             if latest_cost > average_cost:
 
                 st.markdown("""
                 <div class="insight-card">
-                    <h3>⚠️ Cost Alert</h3>
+                    <h3>Cost Increase Detected</h3>
+
                     <p>
                     AWS spending is above normal baseline.
-                    Recommended actions:
+                    Recommended optimization review required.
                     </p>
+
                     <ul>
-                        <li>Review unused EC2 instances</li>
-                        <li>Optimize storage usage</li>
-                        <li>Check idle services</li>
+                        <li>Review idle EC2 instances</li>
+                        <li>Optimize S3 storage lifecycle</li>
+                        <li>Analyze Lambda execution frequency</li>
                     </ul>
+
                 </div>
                 """, unsafe_allow_html=True)
 
@@ -276,53 +306,43 @@ with tab2:
 
                 st.markdown("""
                 <div class="insight-card">
-                    <h3>✅ Infrastructure Healthy</h3>
+                    <h3>Infrastructure Optimized</h3>
+
                     <p>
-                    Cloud spending patterns are optimized and stable.
+                    AWS infrastructure cost pattern is healthy and stable.
                     </p>
+
                 </div>
                 """, unsafe_allow_html=True)
 
-        with col6:
+        with col2:
 
-            if len(df) > 3:
+            st.markdown("""
+            <div class="insight-card">
 
-                trend = df["Cost"].diff().mean()
+                <h3>Optimization Recommendations</h3>
 
-                if trend > 5:
+                <ul>
+                    <li>Enable Reserved Instances</li>
+                    <li>Monitor unused services</li>
+                    <li>Track monthly billing trends</li>
+                    <li>Review storage utilization</li>
 
-                    st.markdown("""
-                    <div class="insight-card">
-                        <h3>🚨 Trend Analysis</h3>
-                        <p>
-                        Increasing infrastructure cost trend detected.
-                        Long-term optimization recommended.
-                        </p>
-                    </div>
-                    """, unsafe_allow_html=True)
+                </ul>
 
-                else:
+            </div>
+            """, unsafe_allow_html=True)
 
-                    st.markdown("""
-                    <div class="insight-card">
-                        <h3>📊 Usage Pattern</h3>
-                        <p>
-                        Resource utilization appears balanced and healthy.
-                        </p>
-                    </div>
-                    """, unsafe_allow_html=True)
+# ---------------- REPORTS ---------------- #
 
-    st.markdown("## 🎯 Optimization Recommendations")
+elif page == "Historical Reports":
 
-    st.info("💡 Consider Reserved Instances for predictable workloads.")
-    st.info("💡 Enable S3 lifecycle policies for unused storage.")
-    st.info("💡 Monitor Lambda execution frequency regularly.")
+    st.title("Historical Reports")
 
-# ---------------- REPORTS TAB ---------------- #
-
-with tab3:
-
-    st.markdown("## 📁 Historical Cost Reports")
+    st.markdown(
+        "<p class='small-text'>Cloud financial reporting archive.</p>",
+        unsafe_allow_html=True
+    )
 
     st.dataframe(
         df,
@@ -333,6 +353,9 @@ with tab3:
 
 st.markdown("""
 <div class="footer">
-Built with AWS • Streamlit • Python • DevOps Automation
+
+AWS Cost Optimization Platform<br>
+AI-Powered Cloud Cost Intelligence
+
 </div>
 """, unsafe_allow_html=True)
