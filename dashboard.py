@@ -49,19 +49,32 @@ h2 {
 }
 
 .metric-card {
-    background: white;
+    background: linear-gradient(
+        135deg,
+        #ffffff,
+        #f8fbff
+    );
+
     padding: 22px;
     border-radius: 18px;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 4px 18px rgba(0,0,0,0.05);
+    border: 1px solid #dbeafe;
+
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.08);
 }
 
 .insight-card {
-    background: white;
+
+    background: linear-gradient(
+        135deg,
+        #eff6ff,
+        #ffffff
+    );
+
     padding: 22px;
     border-radius: 18px;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    border: 1px solid #bfdbfe;
+
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.08);
 }
 
 .small-text {
@@ -217,10 +230,11 @@ if page == "Executive Dashboard":
     st.markdown("## Cloud Spend Analytics")
 
     fig = px.area(
-        df,
-        x="Date",
-        y="Cost",
-        markers=True
+    df,
+    x="Date",
+    y="Cost",
+    markers=True,
+    color_discrete_sequence=["#2563eb"]
     )
 
     fig.update_layout(
