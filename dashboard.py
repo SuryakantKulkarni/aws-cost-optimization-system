@@ -8,7 +8,7 @@ import plotly.express as px
 # ---------------- PAGE CONFIG ---------------- #
 
 st.set_page_config(
-    page_title="AWS Cost Optimization Platform",
+    page_title="AWS Cost Optimization Dashboard",
     page_icon="☁️",
     layout="wide"
 )
@@ -92,7 +92,7 @@ BUCKET_NAME = "aws-cost-optimization-reports-surya"
 
 # ---------------- SIDEBAR ---------------- #
 
-st.sidebar.title("AWS Cost Optimization Platform")
+st.sidebar.title("AWS Cost Optimization System")
 
 page = st.sidebar.radio(
     "Navigation",
@@ -156,7 +156,7 @@ df = pd.DataFrame({
 
 if page == "Dashboard":
 
-    st.title("AWS Cost Optimization Platform")
+    st.title("AWS Cost Optimization Dashboard")
 
     st.caption(
         "AI-Powered Cloud Cost Intelligence"
@@ -271,7 +271,7 @@ elif page == "Reports":
 st.markdown("""
 <div class="footer">
 
-AWS Cost Optimization Platform<br>
+AWS Cost Optimization System<br>
 AI-Powered Cloud Cost Intelligence
 
 </div>
