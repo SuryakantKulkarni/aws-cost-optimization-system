@@ -255,7 +255,7 @@ elif page == "Cost Analytics":
         use_container_width=True
     )
 
-# ---------------- REPORTS ---------------- #
+# ----------------- REPORTS ----------------- #
 
 elif page == "Reports":
 
